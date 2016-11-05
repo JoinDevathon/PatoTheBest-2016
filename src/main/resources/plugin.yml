@@ -4,4 +4,7 @@ version: 1.0.0
 author: OutdatedVersion
 
 main: org.devathon.contest2016.DevathonPlugin
+commands:
+  quarry:
+    description: Command for Quarry
 
