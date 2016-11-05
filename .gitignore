@@ -1,3 +1,10 @@
+# IntelliJ
+*.iml
+.idea/
+
+# Maven
+target/
+
+# Other
 build/
 server/
-target/
