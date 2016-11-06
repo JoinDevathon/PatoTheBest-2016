@@ -1,6 +1,7 @@
 package org.devathon.contest2016.quarry;
 
 import org.bukkit.Location;
+import org.bukkit.block.Block;
 import org.bukkit.util.Vector;
 
 public class QuarryRegion {
@@ -28,9 +29,9 @@ public class QuarryRegion {
         return location1 != null && location2 != null;
     }
 
-    public Quarry createQuarry() {
+    public Quarry createQuarry(Block controller) {
         Vector point1 = new Vector(location1.getBlockX() < location2.getBlockX() ? location1.getBlockX() : location2.getBlockX(), location1.getBlockY() < location2.getBlockY() ? location1.getBlockY() : location2.getBlockY(), location1.getBlockZ() < location2.getBlockZ() ? location1.getBlockZ() : location2.getBlockZ());
         Vector point2 = new Vector(location1.getBlockX() >= location2.getBlockX() ? location1.getBlockX() : location2.getBlockX(), location1.getBlockY() >= location2.getBlockY() ? location1.getBlockY() : location2.getBlockY(), location1.getBlockZ() >= location2.getBlockZ() ? location1.getBlockZ() : location2.getBlockZ());
-        return new Quarry(location1.getWorld(), point1, point2);
+        return new Quarry(location1.getWorld(), point1, point2, controller);
     }
 }

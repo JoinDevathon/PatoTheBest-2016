@@ -99,7 +99,7 @@ public class PlayerListener implements Listener {
                 region.setLocation1(torches[0].getLocation());
                 region.setLocation2(torches[1].getLocation().clone().add(0, 5, 0));
 
-                Quarry quarry = region.createQuarry();
+                Quarry quarry = region.createQuarry(event.getClickedBlock());
                 plugin.getQuarryController().addQuarry(quarry);
                 event.getPlayer().sendMessage(ChatColor.GREEN + "Started mining at " + quarry.getBlock().getX() + ", " + quarry.getBlock().getY() + ", " + quarry.getBlock().getZ());
             }
