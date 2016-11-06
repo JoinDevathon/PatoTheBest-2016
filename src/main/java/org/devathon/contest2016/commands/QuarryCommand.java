@@ -6,8 +6,6 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.devathon.contest2016.DevathonPlugin;
-import org.devathon.contest2016.quarry.Quarry;
-import org.devathon.contest2016.quarry.QuarryRegion;
 
 public class QuarryCommand implements CommandExecutor {
 
@@ -24,17 +22,7 @@ public class QuarryCommand implements CommandExecutor {
             return false;
         }
 
-        Player player = (Player) commandSender;
-        QuarryRegion region = plugin.getPlayerListener().getRegion(player);
 
-        if(!region.isValid()) {
-            player.sendMessage(ChatColor.RED + "Please select two points using a brick.");
-            return false;
-        }
-
-        Quarry quarry = region.createQuarry();
-        plugin.getQuarryController().addQuarry(quarry);
-        player.sendMessage(ChatColor.GREEN + "Quarry created!");
         return false;
     }
 }

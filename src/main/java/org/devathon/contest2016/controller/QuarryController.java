@@ -1,5 +1,7 @@
-package org.devathon.contest2016;
+package org.devathon.contest2016.controller;
 
+import org.bukkit.block.Block;
+import org.devathon.contest2016.DevathonPlugin;
 import org.devathon.contest2016.quarry.Quarry;
 
 import java.io.File;
@@ -20,6 +22,7 @@ public class QuarryController implements Runnable {
 
     public void loadQuarries() {
         if(!QUARRIES_DIR.exists()) {
+            //noinspection ResultOfMethodCallIgnored
             QUARRIES_DIR.mkdirs();
         }
 
@@ -27,9 +30,14 @@ public class QuarryController implements Runnable {
             return;
         }
 
+        //noinspection ConstantConditions
         for (File file : QUARRIES_DIR.listFiles()) {
             addQuarry(new Quarry(file.getName()));
         }
+    }
+
+    public Quarry getFromQuarryBlock(Block controller) {
+        return quarries.stream().filter(quarry -> quarry.getController().getLocation().equals(controller.getLocation())).findFirst().orElse(null);
     }
 
     public void addQuarry(Quarry quarry) {
