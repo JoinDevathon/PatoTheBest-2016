@@ -1,6 +1,5 @@
 package org.devathon.contest2016.commands;
 
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -34,7 +33,7 @@ public class QuarryCommand implements CommandExecutor {
         }
 
         Quarry quarry = region.createQuarry();
-        Bukkit.getScheduler().runTaskTimer(plugin, quarry, 0L, 10L);
+        plugin.getQuarryController().addQuarry(quarry);
         player.sendMessage(ChatColor.GREEN + "Quarry created!");
         return false;
     }
