@@ -36,7 +36,7 @@ public class Quarry extends BukkitRunnable implements ConfigurationSerializable 
     private Chest chest;
     private boolean east;
     private int blocksMined;
-    private int currentFuel = -1;
+    private int currentFuel;
 
     public Quarry(String name) {
         this.uuid = UUID.fromString(name.replace(".yml", ""));
@@ -100,7 +100,15 @@ public class Quarry extends BukkitRunnable implements ConfigurationSerializable 
     @Override
     public void run() {
         if(chest == null || chest.getLocation().getBlock().getType() != Material.CHEST) {
-            quarryStatus = Status.NO_CHEST;
+            for(BlockFace blockFace : BlockFace.values()) {
+                if (controller.getRelative(blockFace).getType() == Material.CHEST) {
+                    chest = (Chest) controller.getRelative(blockFace).getState();
+                }
+            }
+
+            if(chest == null || chest.getLocation().getBlock().getType() != Material.CHEST) {
+                quarryStatus = Status.NO_CHEST;
+            }
             return;
         }
 
@@ -126,6 +134,10 @@ public class Quarry extends BukkitRunnable implements ConfigurationSerializable 
         }
 
         if(block.getType() != Material.BEDROCK) {
+            if(block.getType() != Material.AIR) {
+                currentFuel--;
+            }
+
             block.getDrops().forEach(itemStack -> chest.getInventory().addItem(itemStack));
             block.setType(Material.AIR);
         }
@@ -234,14 +246,14 @@ public class Quarry extends BukkitRunnable implements ConfigurationSerializable 
     }
 
     public String getStatus() {
-        return quarryStatus == Status.MINING ? quarryStatus.getMessage() + "(" + blocksMined + " blocks)" : quarryStatus.getMessage();
+        return quarryStatus == Status.MINING ? quarryStatus.getMessage() + " (" + blocksMined + " blocks mined) \nFuel left: " + currentFuel : quarryStatus.getMessage();
     }
 
     private void refuel() {
         Dispenser dispenser = (Dispenser) controller.getState();
         List<Fuel> fuels = Arrays.asList(Fuel.values());
         for (ItemStack itemStack : dispenser.getInventory().getContents()) {
-            Fuel fuel = fuels.stream().filter(fuel1 -> fuel1.getFuelMaterial() == itemStack.getType()).findFirst().orElse(null);
+            Fuel fuel = fuels.stream().filter(fuel1 -> itemStack != null && fuel1.getFuelMaterial() == itemStack.getType()).findFirst().orElse(null);
             if(fuel == null) {
                 continue;
             }
