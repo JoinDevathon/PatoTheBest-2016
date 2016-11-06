@@ -9,16 +9,8 @@ public class QuarryRegion {
     private Location location1;
     private Location location2;
 
-    public Location getLocation1() {
-        return location1;
-    }
-
     public void setLocation1(Location location1) {
         this.location1 = location1;
-    }
-
-    public Location getLocation2() {
-        return location2;
     }
 
     public void setLocation2(Location location2) {

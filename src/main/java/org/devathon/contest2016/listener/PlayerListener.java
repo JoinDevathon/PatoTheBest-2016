@@ -10,14 +10,18 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
-import org.devathon.contest2016.Constants;
 import org.devathon.contest2016.DevathonPlugin;
 import org.devathon.contest2016.quarry.Quarry;
 import org.devathon.contest2016.quarry.QuarryRegion;
+import org.devathon.contest2016.util.Constants;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class PlayerListener implements Listener {
 
-    private DevathonPlugin plugin;
+    private final DevathonPlugin plugin;
 
     public PlayerListener(DevathonPlugin plugin) {
         this.plugin = plugin;
@@ -56,48 +60,22 @@ public class PlayerListener implements Listener {
         for(BlockFace blockFace : BlockFace.values()) {
             if(event.getClickedBlock().getRelative(blockFace).getType() == Material.REDSTONE_TORCH_ON) {
                 Block torch1 = event.getClickedBlock().getRelative(blockFace);
-                Block[] torches = new Block[2];
-                Block torch2 = findTorch(torch1.getLocation().getWorld(), torch1.getLocation().getBlockX()+1, torch1.getLocation().getBlockY(), torch1.getLocation().getBlockZ(), torch1.getLocation().getBlockX()+65, torch1.getLocation().getBlockY(), torch1.getLocation().getBlockZ());
-                Block torch3 = findTorch(torch1.getLocation().getWorld(), torch1.getLocation().getBlockX()-65, torch1.getLocation().getBlockY(), torch1.getLocation().getBlockZ(), torch1.getLocation().getBlockX()-1, torch1.getLocation().getBlockY(), torch1.getLocation().getBlockZ());
-                Block torch4 = findTorch(torch1.getLocation().getWorld(), torch1.getLocation().getBlockX(), torch1.getLocation().getBlockY(), torch1.getLocation().getBlockZ()+1, torch1.getLocation().getBlockX(), torch1.getLocation().getBlockY(), torch1.getLocation().getBlockZ()+65);
-                Block torch5 = findTorch(torch1.getLocation().getWorld(), torch1.getLocation().getBlockX(), torch1.getLocation().getBlockY(), torch1.getLocation().getBlockZ()-65, torch1.getLocation().getBlockX(), torch1.getLocation().getBlockY(), torch1.getLocation().getBlockZ()-1);
+                List<Block> torches = new ArrayList<>();
+                torches.add(findTorch(torch1.getLocation().getWorld(), torch1.getLocation().getBlockX()+1, torch1.getLocation().getBlockY(), torch1.getLocation().getBlockZ(), torch1.getLocation().getBlockX()+65, torch1.getLocation().getBlockY(), torch1.getLocation().getBlockZ()));
+                torches.add(findTorch(torch1.getLocation().getWorld(), torch1.getLocation().getBlockX()-65, torch1.getLocation().getBlockY(), torch1.getLocation().getBlockZ(), torch1.getLocation().getBlockX()-1, torch1.getLocation().getBlockY(), torch1.getLocation().getBlockZ()));
+                torches.add(findTorch(torch1.getLocation().getWorld(), torch1.getLocation().getBlockX(), torch1.getLocation().getBlockY(), torch1.getLocation().getBlockZ()+1, torch1.getLocation().getBlockX(), torch1.getLocation().getBlockY(), torch1.getLocation().getBlockZ()+65));
+                torches.add(findTorch(torch1.getLocation().getWorld(), torch1.getLocation().getBlockX(), torch1.getLocation().getBlockY(), torch1.getLocation().getBlockZ()-65, torch1.getLocation().getBlockX(), torch1.getLocation().getBlockY(), torch1.getLocation().getBlockZ()-1));
+                //noinspection SuspiciousMethodCalls
+                torches.removeAll(Collections.singleton(null));
 
-                if(torch2 != null) {
-                    torches[0] = torch2;
-                }
-
-                if(torch3 != null) {
-                    if(torches[0] == null) {
-                        torches[0] = torch3;
-                    } else {
-                        torches[1] = torch3;
-                    }
-                }
-
-                if(torch4 != null) {
-                    if(torches[0] == null) {
-                        torches[0] = torch4;
-                    } else {
-                        torches[1] = torch4;
-                    }
-                }
-
-                if(torch5 != null) {
-                    if(torches[0] == null) {
-                        torches[0] = torch5;
-                    } else {
-                        torches[1] = torch5;
-                    }
-                }
-
-                if(torches[1] == null) {
+                if(torches.size() != 2) {
                     event.getPlayer().sendMessage(ChatColor.RED + "Boundaries not found!");
                     return;
                 }
 
                 QuarryRegion region = new QuarryRegion();
-                region.setLocation1(torches[0].getLocation());
-                region.setLocation2(torches[1].getLocation().clone().add(0, 5, 0));
+                region.setLocation1(torches.get(0).getLocation());
+                region.setLocation2(torches.get(1).getLocation().clone().add(0, 5, 0));
 
                 Quarry quarry = region.createQuarry(event.getClickedBlock());
                 plugin.getQuarryController().addQuarry(quarry);

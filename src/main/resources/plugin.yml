@@ -4,7 +4,3 @@ version: 1.0.0
 author: PatoTheBest
 
 main: org.devathon.contest2016.DevathonPlugin
-commands:
-  quarry:
-    description: Command for Quarry
-

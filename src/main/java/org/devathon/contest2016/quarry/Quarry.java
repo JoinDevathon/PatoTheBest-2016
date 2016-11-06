@@ -13,7 +13,7 @@ import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
-import org.devathon.contest2016.Constants;
+import org.devathon.contest2016.util.Constants;
 import org.devathon.contest2016.file.QuarryFile;
 
 import java.util.*;
@@ -27,11 +27,11 @@ public class Quarry extends BukkitRunnable implements ConfigurationSerializable 
     private final List<Block> northSouthBlocks;
     private final List<Block> upDownBlocks;
     private final QuarryFile quarryFile;
+    private final Block controller;
     private final UUID uuid;
 
     private BlockFace direction;
     private Block block;
-    private Block controller;
     private Status quarryStatus;
     private Chest chest;
     private boolean east;
@@ -62,7 +62,7 @@ public class Quarry extends BukkitRunnable implements ConfigurationSerializable 
         make(false);
     }
 
-    public Quarry(World world, Vector pointA, Vector pointB, Block controller) {
+    Quarry(World world, Vector pointA, Vector pointB, Block controller) {
         this.world = world;
         this.pointA = pointA;
         this.pointB = pointB;
@@ -81,7 +81,7 @@ public class Quarry extends BukkitRunnable implements ConfigurationSerializable 
         make(true);
     }
 
-    public void make(boolean offset) {
+    private void make(boolean offset) {
         drawStructure();
 
         if(offset) {

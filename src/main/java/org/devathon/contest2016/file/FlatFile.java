@@ -2,27 +2,28 @@ package org.devathon.contest2016.file;
 
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.devathon.contest2016.Constants;
+import org.devathon.contest2016.util.Constants;
 
 import java.io.*;
 import java.nio.charset.Charset;
 
-public class FlatFile extends YamlConfiguration {
+class FlatFile extends YamlConfiguration {
 
-    protected final File file;
+    private final File file;
 
-
-    public FlatFile(String fileName) {
+    FlatFile(String fileName) {
         if(!Constants.PLUGIN_DIR.exists()) {
+            //noinspection ResultOfMethodCallIgnored
             Constants.PLUGIN_DIR.mkdirs();
         }
 
         this.file = new File(Constants.PLUGIN_DIR, fileName + ".yml");
     }
 
-    public void load() {
+    void load() {
         if(!file.exists()) {
             try {
+                //noinspection ResultOfMethodCallIgnored
                 file.createNewFile();
                 BufferedWriter writer = new BufferedWriter(new FileWriter(file));
                 writer.write("# a file");

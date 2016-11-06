@@ -7,7 +7,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BookMeta;
-import org.devathon.contest2016.Constants;
+import org.devathon.contest2016.util.Constants;
 
 public class DevatonPlayer implements Listener {
 

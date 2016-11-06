@@ -8,7 +8,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.devathon.contest2016.Constants.QUARRIES_DIR;
+import static org.devathon.contest2016.util.Constants.QUARRIES_DIR;
 
 public class QuarryController implements Runnable {
 
@@ -50,12 +50,8 @@ public class QuarryController implements Runnable {
         quarries.forEach(Quarry::run);
     }
 
-    public List<Quarry> getQuarries() {
-        return quarries;
-    }
 
     public void saveQuarries() {
-        System.out.println("saving quarries");
         quarries.forEach(Quarry::save);
         quarries.forEach(Quarry::destroyDrill);
     }
